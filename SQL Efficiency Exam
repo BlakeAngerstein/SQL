@@ -1,0 +1,143 @@
+select * 
+from naep
+---------------------------------------------------------------------------
+-- Write a query that selects column_name and data_type from information_schema.columns.
+
+select column_name, data_type
+from information_schema.columns
+where table_name = 'naep'
+
+
+
+-----------------------------------------------------------------------------------------------
+Write a query to select the first fifty records of the naep table.
+
+
+
+select *
+from N
+limit 50
+
+--------------------------------------------------------------------------------------------------------
+--Another good way to understand your data is to calculate various summary statistics.
+
+--Summary statistics can give you very useful information, such as where your data is centered and how spread out it is. These summary statistics include count, average, min, and max values.
+
+--Write a query that returns summary statistics for avg_math_4_score by state. Do this by using aliases, 
+--such as COUNT(avg_math_4_score) as count_4, and repeat this for the remaining aliasesavg_4, 
+--min_4, and max_4, for AVG, MIN, and MAX, respectively. Finally, sort the results alphabetically by state name.
+
+select state, count(avg_math_4_score) as count_4, avg(avg_math_4_score) as avg_4, Min(avg_math_4_score) as min_4, max(avg_math_4_score) as max_4
+from naep
+group by naep.state
+order by state
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--Write a query that alters the previous query
+SELECT state, 
+	COUNT(avg_math_4_score) as count_4,
+	AVG(avg_math_4_score) as avg_4,
+	MIN(avg_math_4_score) as min_4, 
+	MAX(avg_math_4_score) as max_4
+FROM naep
+GROUP BY state
+
+--so that it returns only
+--the summary statistics for avg_math_4_score 
+--by state 
+--with differences in max and min values that are greater than 30.
+
+
+SELECT state,COUNT(avg_math_4_score) as count_4,
+AVG(avg_math_4_score) as avg_4,
+MIN(avg_math_4_score) as min_4, 
+MAX(avg_math_4_score) as max_4
+FROM naep
+GROUP BY state
+having MAX(avg_math_4_score)-MIN(avg_math_4_score) >=30
+order by state
+
+
+
+
+
+
+-------------------------------------
+
+--Write a query that returns a field called bottom_10_states
+--that lists the states in the bottom 10 for avg_math_4_score 
+--in the year 2000.
+
+
+select (state) as bottom_10_states
+from naep
+where year = 2000 and avg_math_4_score is not Null
+order by avg_math_4_score 
+limit 10
+
+-----------------------------------------------------
+--Write a query that calculates the average avg_math_4_score rounded to the nearest 2 decimal places over all states in the year 2000. 
+--The resulting variable should still be named avg_math_4_score.
+
+select round(avg(avg_math_4_score),2) as avg_math_4_score
+from naep
+where year = 2000
+
+----------------------------------------------------------
+224.8035365853658537
+--Write a query that returns a field called below_average_states_y2000 that 
+--lists all states with an avg_math_4_score less than the average over all states in the year 2000.
+	
+select avg(avg_math_4_score)
+from naep
+where year = 2000
+--- avg score in 2000
+
+
+select state as below_average_states_y2000
+from naep
+group by state, year, avg_math_4_score
+having year = 2000 and avg_math_4_score < 224.8035365853658537
+
+
+-------------------------------------------------------------------------------------------
+
+
+--Write a query that returns a field called scores_missing_y2000 that lists any states with missing values 
+--in the avg_math_4_score column of the naep data table for the year 2000.
+
+select state as scores_missing_y2000
+from naep
+where year = 2000 and avg_math_4_score IS NULL
+
+
+
+------------------------------------------------------------
+
+--For this challenge, you're being asked to display the average math score alongside the total expenditure to see if there is any relationship between the two. 
+--We are not focusing on doing correlations in this challenge, but rather, this challenge will test your skills with using JOIN.
+
+-- To accomplish your task, write a query that returns, 
+-- for the year 2000, 
+--the state,avg_math_4_score, 
+--and total_expenditure fields 
+--from the naep table 
+
+--left outer joined on the finance table,
+--using id as the key 
+--ordered by total_expenditure, 
+--from largest to smallest.
+
+Be sure to 
+--round avg_math_4_score to the nearest 2 decimal places, 
+--keeping the variable name as is using an alias, 
+--and then filter out NULL from avg_math_4_scores in order to see the results more clearly.
+
+
+select naep.state, round(avg_math_4_score,2) as avg_math_4_score, total_expenditure
+from naep
+
+LEFT OUTER JOIN finance
+on naep.id = finance.id
+where naep.year = 2000 and avg_math_4_score IS NOT NULL
+order by total_expenditure desc
