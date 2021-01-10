@@ -141,3 +141,4 @@ LEFT OUTER JOIN finance
 on naep.id = finance.id
 where naep.year = 2000 and avg_math_4_score IS NOT NULL
 order by total_expenditure desc
+
