@@ -1,0 +1,48 @@
+Select *
+From people
+
+-- Returns Birth country based on birth year and average height, if the birthyear
+-- is after 1950, the max height is less than 75, ordered from greatest to least
+select  birthcountry, birthyear, Avg(Height)
+From people
+where birthyear <1950
+group by birthyear, birthcountry, height
+having max(height) <= 75
+order by birthcountry , birthyear desc
+-----------------------------------------------------------
+
+-- return players who throw and bat with their left hand, and weigh more than 200 pounds, ordered weight
+-- from greatest to least, then birth year form least to greatest
+select throws, bats, birthyear,avg(weight) as AVG_Weight
+from people
+Where Throws = 'L' and bats = 'L'
+group by throws, bats, birthyear
+Having avg(weight) > 200
+order by AVG_weight desc, birthyear
+
+----------------------------------------------------------------
+-- Returns bats and avg height, with weights greater than 200, ordered by avg height 
+select bats, avg(height), weight 
+from people
+where weight > 200
+group by height, bats, weight
+order by avg(height) desc
+---------------------------------------------------------------
+-- Rounded avg weight to the next whole number, displayed as Avg_Weight, when they were born in the USA
+-- and bats with their left hand
+select round(avg(weight),0) as avg_weight, birthcountry, bats
+from people
+where birthcountry ='USA'
+group by birthcountry, bats
+having bats ='L' 
+order by Avg(weight)
+-----------------------------------------------------------
+-- Returns players with the first name David with height rounded to the nearist whole number, 
+select namefirst, round(height,0)
+from people
+group by namefirst, height
+having namefirst ='David'
+order by height
+
+
+
