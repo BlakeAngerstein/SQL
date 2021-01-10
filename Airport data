@@ -1,0 +1,37 @@
+SELECT * FROM public.airports
+LIMIT 100
+--- Limits 100 results from public airport
+
+Select faa
+from airports
+--- Faa Airports
+
+Select Name
+from airports
+----- Names of airports
+Select lat, As Lattitude, round(Lattitude,2) 
+From airports 
+--- Rounds lattitude 
+
+Select lon As Longitude
+From airports
+
+select round(lon,2)
+From airports
+
+
+select round(lat,2)
+From airports
+
+
+select (temp- 32* 5/9)
+As temp_celsius
+from weather
+
+SELECT CONCAT('This plane seats ',seats)
+FROM planes;
+
+SELECT CONCAT('This ', year ,' ', INITCAP( manufacturer ) , ' seats ' , seats)
+AS model_seats
+FROM planes;
+
