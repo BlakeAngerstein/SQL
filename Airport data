@@ -1,37 +1,122 @@
-SELECT * FROM public.airports
-LIMIT 100
 --- Limits 100 results from public airport
 
+SELECT * FROM public.airports
+LIMIT 100
+
+--- Faa Airports
 Select faa
 from airports
---- Faa Airports
 
+----- Names of airports
 Select Name
 from airports
------ Names of airports
+
+--- Rounds lattitude 
 Select lat, As Lattitude, round(Lattitude,2) 
 From airports 
---- Rounds lattitude 
 
+
+-- Aliases longitude as Ion
 Select lon As Longitude
 From airports
 
+--- rounds longitude two 2 places
 select round(lon,2)
 From airports
 
-
+--rounds lattitude to 2 places
 select round(lat,2)
 From airports
 
-
+-- Finds temp to fit an equation
 select (temp- 32* 5/9)
 As temp_celsius
 from weather
 
+-- changes text in seats to say "this plane seats __"
+
 SELECT CONCAT('This plane seats ',seats)
 FROM planes;
 
+
+- creates a row that says " this year is 
 SELECT CONCAT('This ', year ,' ', INITCAP( manufacturer ) , ' seats ' , seats)
 AS model_seats
 FROM planes;
 
+-- Years from 2000
+Select * 
+from planes 
+where year >=2000
+
+-- Boeing Planes only
+Select * 
+From planes 
+where manufacturer Ilike 'boeing'
+
+--Planes commissioned from 1980 to 1990
+select * 
+From Planes 
+where year >=1980 and year <=1990
+
+--- Cessna, Boeing, and Airbus planes
+select * 
+From Planes 
+WHERE manufacturer in('Cessna', 'BOEING', 'AIRBUS')
+
+-- Planes without a year
+select * 
+From Planes 
+WHERE year is Null
+
+-- Planes without a speed
+select * 
+From Planes 
+WHERE speed is Null
+
+
+-- Planes with Seats 50 to 200
+
+select * 
+From Planes 
+WHERE seats between 50 and 200
+
+-- Planes with turbo engines 
+select * 
+From Planes 
+WHERE engine Ilike 'turbo'
+
+
+-- Model numbers of planes inside a cell
+select * 
+From Planes 
+where model Ilike '___-___'
+
+-- Planes that were built after 1980 with more than 100 seats
+SELECT *
+FROM planes
+WHERE year <= 1980 AND seats <100;
+ 
+ 
+-- Planes built before 200 with reciporcating engines
+select * 
+From planes
+where year >2000 or engine like 'Reciprocating'
+
+-- Planes built between 1980 and 1990, has 2 engines, has a speed on record, or that the manufacturer is boeing and cessna
+
+Select * 
+from planes 
+where year between 1980 and 1990 
+	and engines <> 2
+	and speed is not Null
+or manufacturer in('BOEING', 'CESSNA')
+
+
+-- Planes where the year is between 1980 and 1990, have 2 engines, or, have no speed or have a manufacturer as boeing or cessna
+Select * 
+from planes 
+where year between 1980 and 1990 
+	and engines <> 2
+or (speed <> 'null'
+or manufacturer in('BOEING', 'CESSNA'))
