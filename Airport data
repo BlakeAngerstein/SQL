@@ -120,3 +120,4 @@ where year between 1980 and 1990
 	and engines <> 2
 or (speed <> 'null'
 or manufacturer in('BOEING', 'CESSNA'))
+
